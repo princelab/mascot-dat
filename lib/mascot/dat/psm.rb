@@ -64,25 +64,27 @@ module Mascot
           when /^q(\d+)_p(\d+)$/
             @query = $1.to_i
             @rank = $2.to_i
-            psm_vals, prots  = v.split(";")
-            psm_vals = psm_vals.split(',')
-            @missed_cleavages= psm_vals[0].to_i
-            @mr              = psm_vals[1].to_f
-            @delta           = psm_vals[2].to_f
-            @num_ions_matched = psm_vals[3].to_i
-            @pep             = psm_vals[4]
-            @ions1           = psm_vals[5].to_i
-            @var_mods_str    = psm_vals[6]
-            @score           = psm_vals[7].to_f
-            @ion_series_str  = psm_vals[8]
-            @ions2           = psm_vals[9].to_i
-            @ions3           = psm_vals[10].to_i
+            unless v == '' || v == '-1'
+              psm_vals, prots  = v.split(";")
+              psm_vals = psm_vals.split(',')
+              @missed_cleavages= psm_vals[0].to_i
+              @mr              = psm_vals[1].to_f
+              @delta           = psm_vals[2].to_f
+              @num_ions_matched = psm_vals[3].to_i
+              @pep             = psm_vals[4]
+              @ions1           = psm_vals[5].to_i
+              @var_mods_str    = psm_vals[6]
+              @score           = psm_vals[7].to_f
+              @ion_series_str  = psm_vals[8]
+              @ions2           = psm_vals[9].to_i
+              @ions3           = psm_vals[10].to_i
 
-            # assign protein  s
-            @proteins = prots.split(",").map do |pe|
-              acc,*other_vals =  pe.split(":")
-              acc.gsub!(/\"/,'')
-              [acc] + other_vals.map {|e| e.to_i }
+              # assign protein  s
+              @proteins = prots.split(",").map do |pe|
+                acc,*other_vals =  pe.split(":")
+                acc.gsub!(/\"/,'')
+                [acc] + other_vals.map {|e| e.to_i }
+              end
             end
           when /db$/
             # split on 2 chars, call to_i
